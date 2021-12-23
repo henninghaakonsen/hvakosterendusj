@@ -35,9 +35,11 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1
-          className={styles.title}
-        >{`Dusjen koster ${dusjenKoster.toLocaleString("no-NO")} kr`}</h1>
+        {dusjenKoster && (
+          <h1
+            className={styles.title}
+          >{`Dusjen koster ${dusjenKoster.toLocaleString("no-NO")} kr`}</h1>
+        )}
       </main>
     </div>
   );
