@@ -21,7 +21,9 @@ export default function Home() {
         const timekey = dato + "T" + idag.getHours() + ":00:00+01:00";
         const timespris = data[timekey];
 
-        settDusjenKoster(timespris.NOK_per_kWh * (KWh_forEnDusj + nettleie));
+        settDusjenKoster(
+          timespris.NOK_per_kWh * KWh_forEnDusj + KWh_forEnDusj * nettleie
+        );
       });
   }, []);
 
