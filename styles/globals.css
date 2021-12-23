@@ -6,9 +6,15 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-a {
-  color: inherit;
+.a {
+  color: #0070f3;
   text-decoration: none;
+}
+
+.a:hover,
+.a:focus,
+.a:active {
+  text-decoration: underline;
 }
 
 * {

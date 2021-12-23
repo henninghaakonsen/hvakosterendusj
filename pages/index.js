@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -38,8 +37,21 @@ export default function Home() {
         {dusjenKoster && (
           <h1
             className={styles.title}
-          >{`Dusjen koster ${dusjenKoster.toLocaleString("no-NO")} kr`}</h1>
+          >{`Dusjen koster ${dusjenKoster.toLocaleString(
+            "no-NO"
+          )} kr i sone NO1`}</h1>
         )}
+        <p>
+          Se{" "}
+          <a
+            href={
+              "https://www.nordpoolgroup.com/the-power-market/Bidding-areas"
+            }
+          >
+            her
+          </a>{" "}
+          for informasjon om soner.
+        </p>
       </main>
     </div>
   );
