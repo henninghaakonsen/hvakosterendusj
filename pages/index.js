@@ -39,7 +39,7 @@ export default function Home() {
             className={styles.title}
           >{`Dusjen koster ${dusjenKoster.toLocaleString(
             "no-NO"
-          )} kr i sone NO1`}</h1>
+          )} kr på østlandet (NO1)`}</h1>
         )}
         <p>
           Se{" "}
@@ -55,6 +55,10 @@ export default function Home() {
       </main>
       <footer>
         Powered by <a href={"https://github.com/henninghaakonsen"}>Henning</a>
+        <br />
+        {`Basert på ${KWh_forEnDusj.toLocaleString(
+          "no-NO"
+        )} kr per dusj og ${nettleie.toLocaleString("no-NO")} kr i nettleie`}
       </footer>
     </div>
   );
