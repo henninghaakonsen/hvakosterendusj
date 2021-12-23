@@ -53,6 +53,9 @@ export default function Home() {
           for informasjon om soner.
         </p>
       </main>
+      <footer>
+        Powered by <a href={"https://github.com/henninghaakonsen"}>Henning</a>
+      </footer>
     </div>
   );
 }
