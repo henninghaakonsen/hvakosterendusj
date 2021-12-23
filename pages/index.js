@@ -56,9 +56,9 @@ export default function Home() {
       <footer>
         Powered by <a href={"https://github.com/henninghaakonsen"}>Henning</a>
         <br />
-        {`Basert på ${KWh_forEnDusj.toLocaleString(
+        {`Basert på ${KWh_forEnDusj} KWh per dusj og ${nettleie.toLocaleString(
           "no-NO"
-        )} kr per dusj og ${nettleie.toLocaleString("no-NO")} kr i nettleie`}
+        )} kr per KWh i nettleie`}
       </footer>
     </div>
   );
