@@ -11,6 +11,7 @@ export default function Home() {
   useEffect(() => {
     const idag = new Date();
     const dato = idag.toISOString().substr(0, 10);
+    const time = ("0" + idag.getHours()).slice(-2);
     fetch(
       `https://norway-power.ffail.win/?zone=NO1&date=${idag
         .toISOString()
@@ -18,7 +19,7 @@ export default function Home() {
     )
       .then(response => response.json())
       .then(data => {
-        const timekey = dato + "T" + idag.getHours() + ":00:00+01:00";
+        const timekey = dato + "T" + time + ":00:00+01:00";
         const timespris = data[timekey];
 
         settDusjenKoster(
