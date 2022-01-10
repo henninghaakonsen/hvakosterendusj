@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
-  const vedlikehold = true;
   const [dusjenKoster, settDusjenKoster] = useState(undefined);
   const KWh_forEnDusj = 6.5;
   const nettleie = 0.5;
 
-  const [dusjteller, settDusjteller] = useState(0);
+  const [dusjteller, settDusjteller] = useState(1);
   const [brukDusjteller, settBrukDusjteller] = useState(false);
 
   useEffect(() => {
@@ -30,25 +29,24 @@ export default function Home() {
       });
   }, []);
 
-  const oppdaterDusjTeller = () => {
-    setTimeout(() => {
-      settDusjteller(dusjteller + 1);
-
-      if (brukDusjteller) {
-        oppdaterDusjTeller();
-      } else {
-        settDusjteller(0);
-      }
-    }, 1000);
+  const timer = useRef(null);
+  const startStopTimer = () => {
+    if (!timer.current) {
+      settBrukDusjteller(true);
+      timer.current = setInterval(() => {
+        settDusjteller(prevstate => prevstate + 1);
+      }, 1000);
+    } else {
+      settBrukDusjteller(false);
+      settDusjteller(0);
+      clearInterval(timer.current);
+      timer.current = null;
+    }
   };
-
-  useEffect(() => {
-    oppdaterDusjTeller();
-  }, []);
 
   const beregnDusjtellerIKroner = () => {
     const dusjPerSekund = dusjenKoster / 10 / 60;
-    return dusjPerSekund * dusjteller;
+    return (dusjPerSekund * dusjteller).toFixed(2);
   };
 
   return (
@@ -64,17 +62,21 @@ export default function Home() {
           brukDusjteller ? (
             <h1
               className={styles.title}
-              onClick={() => settBrukDusjteller(!brukDusjteller)}
+              onClick={startStopTimer}
             >{`Du har brukt ${beregnDusjtellerIKroner().toLocaleString(
               "no-NO"
-            )} kr på å dusje`}</h1>
+            )} kr på å dusje i ${
+              dusjteller < 60
+                ? `${dusjteller} sekunder`
+                : `${Math.round(dusjteller / 60)} minutter`
+            }`}</h1>
           ) : (
             <h1
               className={styles.title}
-              onClick={() => settBrukDusjteller(!brukDusjteller)}
-            >{`Dusjen koster ${dusjenKoster.toLocaleString(
-              "no-NO"
-            )} kr på østlandet (NO1)`}</h1>
+              onClick={startStopTimer}
+            >{`Dusjen koster ${dusjenKoster
+              .toFixed(2)
+              .toLocaleString("no-NO")} kr på østlandet (NO1)`}</h1>
           )
         ) : (
           <h1 className={styles.title}>Klarer ikke å beregne dusjpris</h1>
