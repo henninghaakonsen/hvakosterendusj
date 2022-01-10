@@ -17,9 +17,7 @@ export default function Home() {
     const dato = idag.toISOString().substr(0, 10);
     const time = ("0" + idag.getHours()).slice(-2);
     fetch(
-      `https://norway-power.ffail.win/?zone=NO1&date=${idag
-        .toISOString()
-        .substr(0, 10)}`
+      "https://us-central1-hvakosterendusj-backend.cloudfunctions.net/hent_dagens_strompriser"
     )
       .then(response => response.json())
       .then(data => {
