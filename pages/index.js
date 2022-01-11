@@ -58,8 +58,8 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        {dusjenKoster ? (
-          brukDusjteller ? (
+        {dusjenKoster &&
+          (brukDusjteller ? (
             <h1
               className={styles.title}
               onClick={startStopTimer}
@@ -77,10 +77,7 @@ export default function Home() {
             >{`Dusjen koster ${dusjenKoster
               .toFixed(2)
               .toLocaleString("no-NO")} kr på østlandet (NO1)`}</h1>
-          )
-        ) : (
-          <h1 className={styles.title}>Klarer ikke å beregne dusjpris</h1>
-        )}
+          ))}
         <p>
           Se{" "}
           <a
