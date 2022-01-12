@@ -4,6 +4,8 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
+  const [henter, settHenter] = useState(false);
+  const [feilmelding, settFeilmelding] = useState(undefined);
   const [dusjenKoster, settDusjenKoster] = useState(undefined);
   const KWh_forEnDusj = 6.5;
   const nettleie = 0.5;
@@ -15,6 +17,8 @@ export default function Home() {
     const idag = new Date();
     const dato = idag.toISOString().substr(0, 10);
     const time = ("0" + idag.getHours()).slice(-2);
+    settHenter(true);
+    settFeilmelding(undefined);
     fetch(
       "https://us-central1-hvakosterendusj-backend.cloudfunctions.net/hent_dagens_strompriser"
     )
@@ -26,6 +30,10 @@ export default function Home() {
         settDusjenKoster(
           timespris.NOK_per_kWh * KWh_forEnDusj + KWh_forEnDusj * nettleie
         );
+        settHenter(false);
+      })
+      .catch(() => {
+        settFeilmelding("Klarer ikke å beregne dusjpris");
       });
   }, []);
 
@@ -58,7 +66,13 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        {henter && <h1 className={styles.title}>Beregner dusjpris...</h1>}
+        {feilmelding !== undefined && (
+          <h1 className={styles.title}>{feilmelding}</h1>
+        )}
+
         {dusjenKoster &&
+          !henter &&
           (brukDusjteller ? (
             <h1
               className={styles.title}
