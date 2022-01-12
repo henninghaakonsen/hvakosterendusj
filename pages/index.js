@@ -34,6 +34,7 @@ export default function Home() {
       })
       .catch(() => {
         settFeilmelding("Klarer ikke å beregne dusjpris");
+        settHenter(false);
       });
   }, []);
 
