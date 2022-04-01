@@ -24,7 +24,7 @@ export default function Home() {
     )
       .then(response => response.json())
       .then(data => {
-        const timekey = dato + "T" + time + ":00:00+01:00";
+        const timekey = dato + "T" + time + ":00:00+02:00";
         const timespris = data[timekey];
 
         settDusjenKoster(
