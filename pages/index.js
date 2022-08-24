@@ -1,49 +1,44 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
-export default function Home() {
-  const [henter, settHenter] = useState(false);
-  const [feilmelding, settFeilmelding] = useState(undefined);
-  const [dusjenKoster, settDusjenKoster] = useState(undefined);
-  const KWh_forEnDusj = 6.5;
-  const nettleie = 0.5;
+const KWh_forEnDusj = 6.5;
+const nettleie = 0.5;
 
+export const getStaticProps = async () => {
+  const idag = new Date();
+  const dato = idag.toISOString().substring(0, 10);
+  const time = ("0" + idag.getHours()).slice(-2);
+  const dusjenKoster = await fetch(
+    "https://us-central1-hvakosterendusj-backend.cloudfunctions.net/hent_dagens_strompriser"
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      const timekey = dato + "T" + time + ":00:00+02:00";
+      const timespris = data[timekey];
+
+      return timespris.NOK_per_kWh * KWh_forEnDusj + KWh_forEnDusj * nettleie;
+    });
+
+  return {
+    props: {
+      dusjenKoster,
+    },
+    revalidate: 1,
+  };
+};
+
+export default function Home({ dusjenKoster }) {
   const [dusjteller, settDusjteller] = useState(1);
   const [brukDusjteller, settBrukDusjteller] = useState(false);
-
-  useEffect(() => {
-    const idag = new Date();
-    const dato = idag.toISOString().substr(0, 10);
-    const time = ("0" + idag.getHours()).slice(-2);
-    settHenter(true);
-    settFeilmelding(undefined);
-    fetch(
-      "https://us-central1-hvakosterendusj-backend.cloudfunctions.net/hent_dagens_strompriser"
-    )
-      .then(response => response.json())
-      .then(data => {
-        const timekey = dato + "T" + time + ":00:00+02:00";
-        const timespris = data[timekey];
-
-        settDusjenKoster(
-          timespris.NOK_per_kWh * KWh_forEnDusj + KWh_forEnDusj * nettleie
-        );
-        settHenter(false);
-      })
-      .catch(() => {
-        settFeilmelding("Klarer ikke å beregne dusjpris");
-        settHenter(false);
-      });
-  }, []);
 
   const timer = useRef(null);
   const startStopTimer = () => {
     if (!timer.current) {
       settBrukDusjteller(true);
       timer.current = setInterval(() => {
-        settDusjteller(prevstate => prevstate + 1);
+        settDusjteller((prevstate) => prevstate + 1);
       }, 1000);
     } else {
       settBrukDusjteller(false);
@@ -67,13 +62,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        {henter && <h1 className={styles.title}>Beregner dusjpris...</h1>}
-        {feilmelding !== undefined && (
-          <h1 className={styles.title}>{feilmelding}</h1>
-        )}
-
         {dusjenKoster &&
-          !henter &&
           (brukDusjteller ? (
             <h1
               className={styles.title}
