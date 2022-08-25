@@ -86,7 +86,7 @@ export default function Home({ dusjenKoster }) {
           Se{" "}
           <a
             href={
-              "https://www.nordpoolgroup.com/the-power-market/Bidding-areas"
+              "https://www.nordpoolgroup.com/en/Market-data1/#/nordic/table"
             }
           >
             her
