@@ -15,7 +15,7 @@ export const getStaticProps = async () => {
   )
     .then((response) => response.json())
     .then((data) => {
-      const timekey = dato + "T" + time + ":00:00+02:00";
+      const timekey = dato + "T" + time + ":00:00+01:00";
       const timespris = data[timekey];
 
       return timespris.NOK_per_kWh * KWh_forEnDusj + KWh_forEnDusj * nettleie;
