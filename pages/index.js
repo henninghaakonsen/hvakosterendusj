@@ -6,7 +6,7 @@ import styles from "../styles/Home.module.css";
 const KWh_forEnDusj = 6.5;
 const nettleie = 0.5;
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const idag = new Date();
   const dato = idag.toISOString().substring(0, 10);
   const time = ("0" + idag.getHours()).slice(-2);
@@ -25,7 +25,6 @@ export const getStaticProps = async () => {
     props: {
       dusjenKoster,
     },
-    revalidate: 1,
   };
 };
 
@@ -95,7 +94,7 @@ export default function Home({ dusjenKoster }) {
         </p>
       </main>
       <footer>
-        Powered by <a href={"https://github.com/henninghaakonsen"}>Henning</a>
+        Laget av <a href={"https://github.com/henninghaakonsen"}>Henning</a>
         <br />
         {`Basert på ${KWh_forEnDusj} KWh per dusj og ${nettleie.toLocaleString(
           "no-NO"
