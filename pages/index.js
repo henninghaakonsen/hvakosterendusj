@@ -6,7 +6,7 @@ import styles from "../styles/Home.module.css";
 const KWh_forEnDusj = 6.5;
 const nettleie = 0.5;
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const idag = new Date();
   const dato = idag.toISOString().substring(0, 10);
   const time = ("0" + idag.getHours()).slice(-2);
