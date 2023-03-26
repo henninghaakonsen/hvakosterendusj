@@ -15,8 +15,9 @@ export const getServerSideProps = async () => {
   )
     .then((response) => response.json())
     .then((data) => {
-      const timekey = dato + "T" + time + ":00:00+01:00";
-      const timespris = data[timekey];
+      const timekeyVintertid = dato + "T" + time + ":00:00+01:00";
+      const timekeySommertid = dato + "T" + time + ":00:00+02:00";
+      const timespris = data[timekeyVintertid] ??data[timekeySommertid] ;
 
       return timespris.NOK_per_kWh * KWh_forEnDusj + KWh_forEnDusj * nettleie;
     });
